@@ -5,6 +5,177 @@ This document outlines the implementation plan for hardening the Newgame project
 
 **Priority Order**: Tasks are numbered by implementation priority (P1 = highest priority)
 
+**🚀 QUICK WINS**: Look for tasks marked with `🚀 QUICK-WIN-#` for immediate implementation with minimal setup cost.
+
+---
+
+## 🚀 IMMEDIATE ACTION: Quick Wins for Local Build Validation
+
+*These tasks provide immediate "build still works" validation for topic branches with minimal infrastructure setup.*
+
+### 🚀 QUICK-WIN-1: Basic Import Validation Script
+**Estimated Time**: 30 minutes
+**Dependencies**: None
+**Run Time**: <5 seconds
+
+**Tasks**:
+- [ ] Create `scripts/validate_build.py` that imports all core game modules
+- [ ] Verify all `src/newgame/` imports work without errors
+- [ ] Add pygame import verification
+- [ ] Include clear success/failure messages
+- [ ] Make script runnable from project root
+
+**Implementation**:
+```python
+#!/usr/bin/env python3
+"""Quick smoke test - verify all core imports work"""
+import sys
+from pathlib import Path
+
+def test_imports():
+    try:
+        # Test core game imports
+        import newgame.main
+        import newgame.core.game
+        import newgame.entities.player
+        import newgame.systems.ui
+        # Test pygame
+        import pygame
+        print("✅ All imports successful")
+        return True
+    except ImportError as e:
+        print(f"❌ Import failed: {e}")
+        return False
+
+if __name__ == "__main__":
+    sys.exit(0 if test_imports() else 1)
+```
+
+**Usage**: `python scripts/validate_build.py`
+
+### 🚀 QUICK-WIN-2: Game Initialization Test
+**Estimated Time**: 1 hour
+**Dependencies**: QUICK-WIN-1
+**Run Time**: <10 seconds
+
+**Tasks**:
+- [ ] Create `tests/test_smoke.py` for basic game initialization
+- [ ] Test pygame can initialize (headless mode)
+- [ ] Test game can create main game object
+- [ ] Verify player object can be instantiated
+- [ ] Add to existing pytest suite
+
+**Implementation**:
+```python
+"""Smoke tests - verify game can initialize without crashing"""
+import pygame
+import pytest
+
+def test_pygame_init():
+    """Test pygame initializes without errors"""
+    pygame.init()
+    assert pygame.get_init()
+    pygame.quit()
+
+def test_game_creation():
+    """Test main game object can be created"""
+    from newgame.core.game import Game
+    game = Game()
+    assert game is not None
+
+def test_player_creation():
+    """Test player object can be instantiated"""
+    from newgame.entities.player import Player
+    player = Player()
+    assert player is not None
+```
+
+**Usage**: `python -m pytest tests/test_smoke.py -v`
+
+### 🚀 QUICK-WIN-3: Enhanced Setup Script Validation
+**Estimated Time**: 1-2 hours
+**Dependencies**: QUICK-WIN-1
+**Run Time**: <15 seconds
+
+**Tasks**:
+- [ ] Enhance existing `setup_env.bat` with basic validation
+- [ ] Add Python version check (3.12.x)
+- [ ] Add pygame import verification
+- [ ] Add virtual environment activation check
+- [ ] Provide clear error messages with fix suggestions
+
+**Enhancement to add to `setup_env.bat`**:
+```batch
+REM Add validation section at end of setup_env.bat
+echo Validating installation...
+python -c "import sys; assert sys.version_info >= (3, 12), f'Need Python 3.12+, got {sys.version}'"
+if %ERRORLEVEL% NEQ 0 (
+    echo ❌ Python version check failed
+    exit /b 1
+)
+
+python -c "import pygame; print('✅ pygame available')"
+if %ERRORLEVEL% NEQ 0 (
+    echo ❌ pygame not available
+    exit /b 1
+)
+
+python scripts/validate_build.py
+if %ERRORLEVEL% NEQ 0 (
+    echo ❌ Build validation failed
+    exit /b 1
+)
+
+echo ✅ Environment setup and validation complete!
+```
+
+### 🚀 QUICK-WIN-4: Basic Pre-commit Hook
+**Estimated Time**: 1 hour
+**Dependencies**: QUICK-WIN-1, QUICK-WIN-2
+**Run Time**: <20 seconds
+
+**Tasks**:
+- [ ] Install `pre-commit` package in requirements.txt
+- [ ] Create `.pre-commit-config.yaml` with essential checks
+- [ ] Configure black code formatting check
+- [ ] Configure flake8 linting
+- [ ] Add basic import validation hook
+- [ ] Document installation for team
+
+**Implementation** (`.pre-commit-config.yaml`):
+```yaml
+repos:
+- repo: https://github.com/psf/black
+  rev: 23.3.0
+  hooks:
+  - id: black
+    language_version: python3.12
+
+- repo: https://github.com/pycqa/flake8
+  rev: 6.0.0
+  hooks:
+  - id: flake8
+    args: [--max-line-length=88]
+
+- repo: local
+  hooks:
+  - id: validate-build
+    name: Validate Build
+    entry: python scripts/validate_build.py
+    language: system
+    always_run: true
+
+- repo: local
+  hooks:
+  - id: smoke-tests
+    name: Smoke Tests
+    entry: python -m pytest tests/test_smoke.py -v
+    language: system
+    always_run: true
+```
+
+**Setup**: `pre-commit install` (run once per developer)
+
 ---
 
 ## 1. Continuous Integration Pipeline (P1)
@@ -317,6 +488,15 @@ This document outlines the implementation plan for hardening the Newgame project
 ---
 
 ## Implementation Schedule
+
+### 🚀 IMMEDIATE (Days 1-2): Quick Wins - Start Here!
+- Complete 🚀 QUICK-WIN-1: Basic Import Validation (30 min)
+- Complete 🚀 QUICK-WIN-2: Game Initialization Test (1 hour)
+- Complete 🚀 QUICK-WIN-3: Enhanced Setup Validation (1-2 hours)
+- Complete 🚀 QUICK-WIN-4: Basic Pre-commit Hook (1 hour)
+
+**Total Time Investment**: 3.5-4.5 hours
+**Impact**: Catches 80% of common breaking changes locally
 
 ### Phase 1 (Weeks 1-2): Foundation
 - Complete items 1.1, 1.2 (CI Pipeline)
