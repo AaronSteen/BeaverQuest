@@ -27,6 +27,7 @@ newgame
 - 📖 [Game Documentation](docs/GAME_README.md) - How to play, controls, and mechanics
 - 🎯 [Design Document](docs/design_doc.md) - Game design and implementation details
 - 📸 [Screenshots](docs/screenshots/) - Game screenshots and visual examples
+- 🤝 [Contributing Guide](CONTRIBUTING.md) - How to contribute to the project
 
 ## Development
 
@@ -113,6 +114,30 @@ pytest
 # Run with coverage
 pytest --cov=newgame --cov-report=html
 ```
+
+### Build Validation
+
+Before making changes, verify your environment is working correctly:
+
+```bash
+# Quick smoke test - validates all imports and basic functionality
+python scripts/validate_build.py
+
+# Should show: "🎉 Build validation PASSED!"
+```
+
+**Why use build validation?**
+- Catches "works on my machine" issues early
+- Verifies pygame installation and initialization
+- Tests all core game module imports
+- Validates basic object instantiation
+- Runs in ~5 seconds
+
+**When to run:**
+- Before starting development work
+- After environment changes
+- When debugging import/dependency issues
+- Before committing changes
 
 ### Code Quality
 

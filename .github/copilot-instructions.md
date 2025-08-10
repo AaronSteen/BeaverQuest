@@ -36,6 +36,9 @@ These scripts handle:
 - Dependency installation with retry logic
 - Environment activation guidance
 
+**When attempting to run the game, ensure the virtual environment is activated!**
+- e.g. if a command like `python src/newgame/main.py` fails, retry by running `.\venv\Scripts\Activate.ps1 && python src/newgame/main.py` (or `source venv/bin/activate && python src/newgame/main.py` on macOS/Linux.)
+
 ### Manual Environment Activation
 After initial setup, activate the environment:
 
@@ -73,7 +76,14 @@ newgame/
 ### Before Making Changes
 1. **ALWAYS** ensure the virtual environment is active
 2. **ALWAYS** run the appropriate setup script if working on a new machine
-3. **VERIFY** pygame installation by running: `python examples/game_example.py`
+3. **VALIDATE** your environment: `python scripts/validate_build.py`
+4. **VERIFY** pygame installation by running: `python examples/game_example.py`
+
+### Build Validation
+- **Quick Test**: `python scripts/validate_build.py` - Validates all imports and basic functionality
+- **Runtime**: ~5 seconds
+- **Purpose**: Catches "works on my machine" issues early in development
+- **When to Use**: Before development work, after environment changes, before commits
 
 ### Code Quality Standards
 - **Formatting**: Use `black .` for consistent code formatting
