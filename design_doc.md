@@ -1,6 +1,4 @@
-# DESIGN DOC
-
-## Overview
+# Overview
 A game where you play as a beaver and collect resources from the surrounding woodland, with the goal of avoiding dying.
 
 Visually, it's a top-down, 2-D game in the vein of Zelda: Link to the Past.
@@ -46,6 +44,8 @@ When over 20%, the bar is yellow.
 When it reaches 20%, the bar turns red.
 If supply reaches zero, the game is over.
 When the player collects <food-item>, the supply is increased by 5.
+
+###
 
 ## Sound
 
