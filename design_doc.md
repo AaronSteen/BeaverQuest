@@ -21,20 +21,18 @@ This screen will contain the Lodge that is the beaver's home.
 ## Input
 - The player can move with `WASD` keys or the `Up`, `Left`, `Down`, `Right` arrow keys.
 - The player can bite with `SPACE`.
-- The player can grab with `F`.
 - The `Esc` key pauses the game and opens the pause menu.
 - All other keys have no use.
 
 ## Gameplay mechanics
 This section describes the systems of the game world.
 
-### Food supply
-Decreases by 1 unit every 5 seconds.
-Represented by a rectangular bar on the player HUD.
-When over 20%, the bar is yellow.
-When it reaches 20%, the bar turns red.
-If supply reaches zero, the game is over.
-When the player collects <food-item>, the supply is increased by 5.
+### Food storage
+At the start of the game, the food storage value is 120.
+Decreases by 1 unit every 4 seconds.
+If the storage reaches zero, the game is over.
+When the player collects [**food-item**], the storage is increased by 5.
+The maximum food storage value is 200.
 
 ### Zones
 The player moves between three zones:
@@ -60,6 +58,15 @@ with water.
 
 ### Start screen
 To be implemented in a later version.
+
+### Player HUD screen
+This is where game information is displayed to the player. The Player HUD screen is transparent, only the items on it are visible.
+
+#### Food supply bar
+Represented by a rectangular bar in the upper-left of the Player HUD.
+The length of the food supply bar is dependent on the food supply.
+When the food supply is greater than 20% of max capacity, the bar is yellow.
+When the food supply is 20% or less than max capacity, the bar turns red.
 
 ### Pause menu
 - Displays two buttons in the center of the screen, one above the other: `Resume` and `Quit`
