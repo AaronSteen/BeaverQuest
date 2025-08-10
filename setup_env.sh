@@ -33,7 +33,14 @@ fi
 
 # Activate virtual environment
 echo "🔧 Activating virtual environment..."
-source venv/bin/activate
+# Detect OS and use appropriate activation script
+if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ -f "venv/Scripts/activate" ]]; then
+    # Windows (Git Bash, MSYS2, etc.)
+    source venv/Scripts/activate
+else
+    # Linux/macOS
+    source venv/bin/activate
+fi
 
 # Upgrade pip
 echo "⬆️  Upgrading pip..."
@@ -67,7 +74,13 @@ done
 echo "✅ Setup complete!"
 echo ""
 echo "📋 To activate the virtual environment in the future, run:"
-echo "   source venv/bin/activate"
+if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ -f "venv/Scripts/activate" ]]; then
+    echo "   source venv/Scripts/activate  # For Git Bash/MSYS2"
+    echo "   venv\\Scripts\\activate.bat    # For Command Prompt"
+    echo "   venv\\Scripts\\Activate.ps1   # For PowerShell"
+else
+    echo "   source venv/bin/activate"
+fi
 echo ""
 echo "📋 To deactivate the virtual environment, run:"
 echo "   deactivate"

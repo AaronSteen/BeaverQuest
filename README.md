@@ -2,13 +2,6 @@
 
 A 2D top-down adventure game where you play as a beaver collecting resources from the surrounding woodland, with the goal of avoiding dying. Visually inspired by Zelda: Link to the Past.
 
-## Game Overview
-
-- **Genre**: 2D Top-down Adventure
-- **Setting**: Woodland environment with a beaver protagonist
-- **World**: 9x9 coordinate plane with the player starting at the center (4,4)
-- **Starting Area**: Player's lodge with a dam along the north border
-
 ## Development Environment Setup
 
 This project uses Python for game development with pygame as the main game engine. Follow these steps to set up a consistent development environment across different machines.
@@ -49,7 +42,7 @@ If you prefer to set up the environment manually:
    ```bash
    # On macOS/Linux:
    source venv/bin/activate
-   
+
    # On Windows:
    venv\Scripts\activate
    ```
