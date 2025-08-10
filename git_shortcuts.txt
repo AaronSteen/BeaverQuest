@@ -1,0 +1,103 @@
+| Key         | Action                               |
+| ----------- | ------------------------------------ |
+| `-`         | Stage/unstage the file under cursor  |
+| `s`         | Stage the file/hunk under cursor     |
+| `u`         | Unstage file/hunk                    |
+| `cc`        | Commit (opens commit message buffer) |
+| `ca`        | Amend last commit                    |
+| `dv`        | View diff of file under cursor       |
+| `:Git push` | Push to remote                       |
+| `:Git pull` | Pull from remote                     |
+
+
+0) One‑time (optional) config
+
+Decide your default pull style. If you want a linear history:
+
+:Git config pull.rebase true
+
+1) Sync remotes
+
+Fetch everything (new branches, deleted ones, etc.):
+
+:Gfetch --all --prune
+
+2) Check out the PR branch locally
+
+Pick one (friend or Copilot), make a local tracking branch, and switch to it:
+
+:Git switch -c friend-dds origin/brandom/design-doc-scaffolding
+" or
+:Git switch -c copilot-fix origin/copilot/fix-7a710048-9f51-44b4-b28e-09a643432452
+
+Now your working tree is that branch; open/edit files normally.
+3) Review quickly
+
+See what this branch changes vs main:
+
+:Gvdiffsplit origin/main
+
+    Use ]c / [c to jump hunks; :q to exit the diff.
+    Skim recent commits on this branch:
+
+:Gclog origin/main..HEAD
+:copen
+
+Browse the branch’s tree without leaving it:
+
+:Gedit .
+
+(. shows the current branch’s root; navigate with Enter and - to go up.)
+4) Make edits and stage
+
+From the status window:
+
+:G           " open status
+
+    Move to a file and press s (stage hunk/file) or - (toggle stage).
+
+    Press dv to open a diff of the file under cursor.
+
+    Or from the file’s diff window: :Gwrite to stage the buffer.
+
+5) Commit
+
+In the status window:
+
+cc           " make a commit (opens commit buffer)
+ca           " amend last commit
+
+Write the message, save, and :wq.
+6) Keep in sync with latest main (if needed)
+
+If the PR should sit on top of current main:
+
+:Git fetch origin
+:Git rebase origin/main
+
+Resolve conflicts with a 3‑way diff:
+
+:Gvdiffsplit!
+:diffget //2     " ours
+:diffget //3     " theirs
+:w | :Gwrite
+:Git rebase --continue
+
+Repeat until done.
+7) Push the branch back up
+
+First push sets upstream automatically if you created the local branch as above:
+
+:Gpush
+
+(If Git asks, it will print the --set-upstream command; run it once.)
+8) Wrap up / switch back
+
+When you’re done reviewing that PR:
+
+:Git switch main
+:Gpull --rebase
+
+Optionally clean up local topic branches after they merge:
+
+:Git branch -d friend-dds
