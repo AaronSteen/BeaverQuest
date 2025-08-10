@@ -48,7 +48,6 @@ The length of the food supply bar is dependent on the food supply.
 When the food supply is greater than 20% of max capacity, the bar is yellow.
 When the food supply is 20% or less than max capacity, the bar turns red.
 
-
 ### Pause menu
 - Displays two buttons in the center of the screen, one above the other: `Resume` and `Quit`
 - When the pause menu is activated, the game screen is dimmed 50%
