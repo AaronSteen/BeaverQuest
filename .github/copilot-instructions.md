@@ -1,4 +1,4 @@
-# LLM Agent Instructions for Newgame Project
+# LLM/Agent Instructions for Newgame Project
 
 ## Project Overview
 This is **Newgame**, a 2D top-down adventure game where you play as a beaver collecting resources from woodland areas to avoid dying. The game is visually inspired by Zelda: Link to the Past and is built with Python using pygame.
