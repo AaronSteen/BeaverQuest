@@ -1,97 +1,117 @@
 @echo off
-REM Python Virtual Environment Setup Script for Newgame Project (Windows)
-REM This script automates the creation and setup of a Python virtual environment
+setlocal EnableExtensions EnableDelayedExpansion
 
-echo 🎮 Setting up Python virtual environment for Newgame project...
+echo [STEP 0] Starting Python venv setup for Newgame...
+echo [INFO ] Current dir: %CD%
 
-REM Check if Python 3.12 is available
-where python3.12 >nul 2>&1
-if %errorlevel% == 0 (
-    set PYTHON_CMD=python3.12
-) else (
-    where python >nul 2>&1
-    if %errorlevel% == 0 (
-        set PYTHON_CMD=python
-        echo ⚠️  Warning: python3.12 not found, using python instead
-    ) else (
-        echo ❌ Error: Python is not installed or not in PATH
-        echo 💡 Please install Python from https://python.org
-        pause
-        exit /b 1
-    )
+REM --- Step 1: Detect Python interpreter (prefer py launcher) ---
+echo [STEP 1] Detecting Python interpreter...
+set "PY_CMD="
+py -3.12 -V >nul 2>&1 & if !errorlevel!==0 set "PY_CMD=py -3.12"
+if not defined PY_CMD (
+    py -3 -V >nul 2>&1 & if !errorlevel!==0 set "PY_CMD=py -3"
 )
+if not defined PY_CMD (
+    python -V >nul 2>&1 & if !errorlevel!==0 set "PY_CMD=python"
+)
+if not defined PY_CMD (
+    echo [ERROR] No suitable Python found via py/python. Using WHERE to probe...
+    where py
+    where python
+    exit /b 1
+)
+echo [INFO ] Using interpreter: %PY_CMD%
+for /f "delims=" %%V in ('%PY_CMD% --version 2^>^&1') do echo   %%V
 
-REM Check Python version
-echo 🐍 Checking Python version...
-%PYTHON_CMD% --version
-
-REM Create virtual environment if it doesn't exist
+REM --- Step 2: Create venv if missing ---
+echo [STEP 2] Checking virtual environment folder...
 if not exist "venv" (
-    echo 📦 Creating virtual environment...
-    %PYTHON_CMD% -m venv venv
-    if %errorlevel% neq 0 (
-        echo ❌ Failed to create virtual environment
-        echo 💡 Make sure Python venv module is available
-        pause
+    echo   venv not found, creating...
+    %PY_CMD% -m venv venv
+    if !errorlevel! neq 0 (
+        echo [ERROR] Failed to create virtual environment.
         exit /b 1
     )
 ) else (
-    echo 📦 Virtual environment already exists
+    echo   venv already exists.
 )
 
-REM Activate virtual environment
-echo 🔧 Activating virtual environment...
-call venv\Scripts\activate.bat
+REM --- Step 3: Point directly to venv python ---
+set "VENV_PY=%CD%\venv\Scripts\python.exe"
+if not exist "%VENV_PY%" (
+    echo [ERROR] venv\Scripts\python.exe not found. Contents of venv\Scripts:
+    dir /b "venv\Scripts"
+    echo pyvenv.cfg:
+    type "venv\pyvenv.cfg" 2>nul
+    exit /b 1
+)
+echo [STEP 3] Using venv interpreter: "%VENV_PY%"
+"%VENV_PY%" --version
 
-REM Upgrade pip
-echo ⬆️  Upgrading pip...
-python -m pip install --upgrade pip
-if %errorlevel% neq 0 (
-    echo ⚠️  Warning: Failed to upgrade pip, continuing with installation...
+REM --- Step 4: Upgrade pip inside venv ---
+echo [STEP 4] Upgrading pip in venv...
+"%VENV_PY%" -m pip install --upgrade pip
+if !errorlevel! neq 0 (
+    echo [WARN ] Could not upgrade pip; continuing.
+) else (
+    echo   pip upgraded successfully.
 )
 
-REM Install dependencies with retry logic
-echo 📚 Installing dependencies from requirements.txt...
-set MAX_RETRIES=3
-set RETRY_COUNT=0
+REM --- Step 5: Install dependencies (with delayed expansion) ---
+echo [STEP 5] Checking for requirements.txt...
+if exist requirements.txt (
+    echo   Found requirements.txt, installing dependencies...
+    set "MAX_RETRIES=3"
+    set "RETRY_COUNT=0"
 
 :retry_loop
-if %RETRY_COUNT% geq %MAX_RETRIES% goto install_failed
+    echo   Attempt !RETRY_COUNT! of !MAX_RETRIES!...
+    "%VENV_PY%" -m pip install --timeout 300 --retries 2 -r requirements.txt
+    if !errorlevel!==0 (
+        echo   Dependencies installed successfully.
+        goto install_success
+    )
 
-python -m pip install --timeout 300 --retries 2 -r requirements.txt
-if %errorlevel% == 0 (
-    echo ✅ Dependencies installed successfully!
-    goto install_success
+    set /a RETRY_COUNT+=1
+    if !RETRY_COUNT! lss !MAX_RETRIES! (
+        echo   Install failed, retrying in 5 seconds...
+        timeout /t 5 /nobreak >nul
+        goto retry_loop
+    )
+
+    echo [ERROR] Failed to install dependencies after !MAX_RETRIES! attempts.
+) else (
+    echo   No requirements.txt found. Skipping dependency installation.
 )
-
-set /a RETRY_COUNT=%RETRY_COUNT%+1
-if %RETRY_COUNT% lss %MAX_RETRIES% (
-    echo ⚠️  Installation failed, retrying (%RETRY_COUNT%/%MAX_RETRIES%)...
-    timeout /t 5 /nobreak >nul
-    goto retry_loop
-)
-
-:install_failed
-echo ❌ Failed to install dependencies after %MAX_RETRIES% attempts.
-echo 💡 This may be due to network connectivity issues.
-echo 💡 You can manually install dependencies later with:
-echo    venv\Scripts\activate.bat
-echo    pip install -r requirements.txt
-echo.
-goto setup_complete
 
 :install_success
 
-:setup_complete
-echo ✅ Setup complete!
+REM --- Step 6: Best-effort activation (optional) ---
+echo [STEP 6] Attempting to activate venv (cmd.exe)...
+if exist "venv\Scripts\activate.bat" (
+    call "venv\Scripts\activate.bat"
+    if !errorlevel!==0 (
+        echo   venv activated. Current python:
+        python --version
+    ) else (
+        echo [WARN ] Activation script returned non-zero. Continuing without activation.
+    )
+) else (
+    echo [INFO ] activate.bat not found. In PowerShell use:
+    echo        .\venv\Scripts\Activate.ps1
+)
+
+REM --- Step 7: Wrap up ---
+echo [STEP 7] Setup complete.
 echo.
-echo 📋 To activate the virtual environment in the future, run:
-echo    venv\Scripts\activate.bat
+echo To use the venv in this shell (cmd.exe):
+echo    call venv\Scripts\activate.bat
+echo In PowerShell:
+echo    .\venv\Scripts\Activate.ps1
 echo.
-echo 📋 To deactivate the virtual environment, run:
-echo    deactivate
+echo To run without activating:
+echo    "%VENV_PY%" -m pip list
+echo    "%VENV_PY%" your_script.py
 echo.
-echo 🎮 You're now ready to start developing the Newgame project!
-echo.
-echo Press any key to exit...
-pause >nul
+
+endlocal
