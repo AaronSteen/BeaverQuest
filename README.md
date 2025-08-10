@@ -22,6 +22,7 @@ This project uses Python for game development with pygame as the main game engin
 
 The easiest way to set up your development environment is to use the automated setup script:
 
+#### On macOS/Linux:
 ```bash
 # Clone the repository (if you haven't already)
 git clone https://github.com/friendlyman23/newgame.git
@@ -29,6 +30,16 @@ cd newgame
 
 # Run the setup script
 ./setup_env.sh
+```
+
+#### On Windows:
+```cmd
+# Clone the repository (if you haven't already)
+git clone https://github.com/friendlyman23/newgame.git
+cd newgame
+
+# Run the setup script
+setup_env.bat
 ```
 
 This script will:
@@ -87,7 +98,11 @@ The project includes the following main dependencies (see `requirements.txt` for
 
 1. **Activate your virtual environment** (if not already active):
    ```bash
+   # On macOS/Linux:
    source venv/bin/activate
+   
+   # On Windows:
+   venv\Scripts\activate.bat
    ```
 
 2. **Run tests** (when available):
@@ -114,17 +129,20 @@ The project includes the following main dependencies (see `requirements.txt` for
 
 #### Virtual Environment Issues
 
-- If you get permission errors, ensure the setup script is executable: `chmod +x setup_env.sh`
-- If Python 3.12 isn't available, the script will fall back to `python3`
+- **On macOS/Linux**: If you get permission errors, ensure the setup script is executable: `chmod +x setup_env.sh`
+- **On Windows**: Run the Command Prompt as Administrator if you encounter permission issues
+- If Python 3.12 isn't available, the script will fall back to `python3` (macOS/Linux) or `python` (Windows)
 - Make sure you're in the project root directory when running setup commands
 
 #### Dependency Issues
 
 - If installation fails, try upgrading pip: `pip install --upgrade pip`
 - For pygame installation issues on Linux, you may need system dependencies: `sudo apt-get install python3-dev python3-pygame`
+- **On Windows**: If you encounter pygame installation issues, make sure you have the latest Visual C++ Redistributable installed
 - If you encounter network timeouts during pip install, try:
-  - Run the setup script again (it has retry logic)
-  - Manually install dependencies: `source venv/bin/activate && pip install -r requirements.txt`
+  - Run the setup script again (both scripts have retry logic)
+  - **macOS/Linux**: Manually install dependencies: `source venv/bin/activate && pip install -r requirements.txt`
+  - **Windows**: Manually install dependencies: `venv\Scripts\activate.bat && pip install -r requirements.txt`
   - Use a different pip index: `pip install -i https://pypi.org/simple/ -r requirements.txt`
 
 ### Contributing
@@ -140,7 +158,8 @@ The project includes the following main dependencies (see `requirements.txt` for
 newgame/
 ├── .python-version      # Specifies Python version
 ├── requirements.txt     # Python dependencies
-├── setup_env.sh        # Environment setup script
+├── setup_env.sh        # Environment setup script (macOS/Linux)
+├── setup_env.bat       # Environment setup script (Windows)
 ├── design_doc.md       # Game design documentation
 ├── examples/           # Example code and demos
 │   └── game_example.py # Simple pygame verification script
@@ -153,8 +172,18 @@ newgame/
 After running the setup script, you can test that everything works correctly:
 
 ```bash
+# On macOS/Linux:
 # Activate the virtual environment
 source venv/bin/activate
+
+# Run the example script to verify pygame works
+python examples/game_example.py
+```
+
+```cmd
+# On Windows:
+# Activate the virtual environment
+venv\Scripts\activate.bat
 
 # Run the example script to verify pygame works
 python examples/game_example.py
