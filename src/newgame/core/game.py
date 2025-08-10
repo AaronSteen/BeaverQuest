@@ -1,27 +1,30 @@
 """
-Main game loop for the Beaver Survival Game.
+Main game class for the Beaver Survival Game.
 """
 
 import pygame
 import sys
-from utils import (
+from ..config.settings import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     FPS,
-    COLORS,
     INITIAL_FOOD,
     MAX_FOOD,
     FOOD_DECREASE_INTERVAL,
     FOOD_DECREASE_AMOUNT,
     FOOD_COLLECTION_AMOUNT,
+)
+from ..config.constants import (
+    COLORS,
     STATE_PLAYING,
     STATE_PAUSED,
     STATE_GAME_OVER,
 )
-from game_state import GameStateManager
-from player import Player
-from game_objects import Lodge, Dam, FoodManager
-from ui import UI
+from .game_state import GameStateManager
+from ..entities.player import Player
+from ..entities.objects import Lodge, Dam
+from ..entities.food import FoodManager
+from ..systems.ui import UI
 
 
 class BeaverSurvivalGame:
@@ -199,18 +202,3 @@ class BeaverSurvivalGame:
             self.clock.tick(FPS)
 
         pygame.quit()
-
-
-def main():
-    """Entry point for the game."""
-    try:
-        game = BeaverSurvivalGame()
-        game.run()
-    except Exception as e:
-        print(f"Error running game: {e}")
-        pygame.quit()
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()

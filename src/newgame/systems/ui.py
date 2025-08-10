@@ -3,7 +3,8 @@ User interface elements for the Beaver Survival Game.
 """
 
 import pygame
-from utils import COLORS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_FOOD
+from ..config.constants import COLORS
+from ..config.settings import SCREEN_WIDTH, SCREEN_HEIGHT, MAX_FOOD
 
 
 class UI:

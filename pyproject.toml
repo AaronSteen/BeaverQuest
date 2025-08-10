@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "newgame"
+version = "0.1.0"
+description = "A 2D top-down beaver survival game built with Pygame"
+authors = [
+    {name = "Newgame Team"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Games/Entertainment",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pygame>=2.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+docs = [
+    "Sphinx>=7.0.0",
+]
+
+[project.scripts]
+newgame = "newgame.main:main"
+
+[project.urls]
+Homepage = "https://github.com/friendlyman23/newgame"
+Repository = "https://github.com/friendlyman23/newgame"
+Issues = "https://github.com/friendlyman23/newgame/issues"
+
+[tool.setuptools]
+packages = ["newgame"]
+package-dir = {"" = "src"}
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=newgame --cov-report=term-missing --cov-report=html"

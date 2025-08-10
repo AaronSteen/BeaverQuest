@@ -3,7 +3,7 @@ Game state management for the Beaver Survival Game.
 """
 
 import pygame
-from utils import STATE_PLAYING, STATE_PAUSED, STATE_GAME_OVER
+from ..config.constants import STATE_PLAYING, STATE_PAUSED, STATE_GAME_OVER
 
 
 class GameStateManager:

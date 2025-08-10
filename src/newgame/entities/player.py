@@ -3,17 +3,19 @@ Player (beaver) character for the Beaver Survival Game.
 """
 
 import pygame
-from utils import (
+from ..config.settings import (
     PLAYER_SIZE,
     PLAYER_SPEED,
     PLAYER_SPEED_LAND,
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+)
+from ..config.constants import (
     COLORS,
     MOVEMENT_KEYS,
     ZONE_LODGE,
     ZONE_WATER,
     ZONE_LAND,
-    SCREEN_WIDTH,
-    SCREEN_HEIGHT,
 )
 
 

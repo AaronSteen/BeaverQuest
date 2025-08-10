@@ -1,188 +1,143 @@
-# Newgame - Beaver Adventure Game
+# Newgame - Beaver Survival Game
 
-A 2D top-down adventure game where you play as a beaver collecting resources from the surrounding woodland, with the goal of avoiding dying. Visually inspired by Zelda: Link to the Past.
+A 2D top-down survival game where you play as a beaver collecting food to survive in your woodland home. Built with Pygame and inspired by classic adventure games like Zelda: Link to the Past.
 
-## Development Environment Setup
+![Game Screenshot](docs/screenshots/game_final_screenshot.png)
 
-This project uses Python for game development with pygame as the main game engine. Follow these steps to set up a consistent development environment across different machines.
+## Quick Start
 
-### Prerequisites
-
-- Python 3.12.3 (recommended version specified in `.python-version`)
-- Git (for version control)
-
-### Quick Setup (Recommended)
-
-The easiest way to set up your development environment is to use the automated setup script:
-
-#### On macOS/Linux:
 ```bash
-# Clone the repository (if you haven't already)
+# Clone the repository
 git clone https://github.com/friendlyman23/newgame.git
 cd newgame
 
-# Run the setup script
-./setup_env.sh
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the game (development mode)
+python scripts/run_game.py
+
+# Or install as package and run
+pip install -e .
+newgame
 ```
 
-#### On Windows:
-```cmd
-# Clone the repository (if you haven't already)
-git clone https://github.com/friendlyman23/newgame.git
-cd newgame
+## Game Documentation
 
-# Run the setup script
-setup_env.bat
-```
+- 📖 [Game Documentation](docs/GAME_README.md) - How to play, controls, and mechanics
+- 🎯 [Design Document](docs/design_doc.md) - Game design and implementation details
+- 📸 [Screenshots](docs/screenshots/) - Game screenshots and visual examples
 
-This script will:
-- Create a Python virtual environment
-- Install all required dependencies
-- Activate the environment for immediate use
+## Development
 
-### Manual Setup
+### Modern Project Structure
 
-If you prefer to set up the environment manually:
-
-1. **Create a virtual environment:**
-   ```bash
-   python3.12 -m venv venv
-   ```
-
-2. **Activate the virtual environment:**
-   ```bash
-   # On macOS/Linux:
-   source venv/bin/activate
-
-   # On Windows:
-   venv\Scripts\activate
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-
-### Python Version Management
-
-This project specifies Python 3.12.3 in the `.python-version` file. If you're using pyenv:
-
-```bash
-# Install the specified Python version
-pyenv install 3.12.3
-
-# Set it as the local version for this project
-pyenv local 3.12.3
-```
-
-### Dependencies
-
-The project includes the following main dependencies (see `requirements.txt` for specific versions):
-
-- **pygame**: Main game development framework
-- **pytest**: Testing framework
-- **pytest-cov**: Test coverage reporting
-- **black**: Code formatting
-- **flake8**: Code linting
-- **Sphinx**: Documentation generation
-
-### Development Workflow
-
-1. **Activate your virtual environment** (if not already active):
-   ```bash
-   # On macOS/Linux:
-   source venv/bin/activate
-   
-   # On Windows:
-   venv\Scripts\activate.bat
-   ```
-
-2. **Run tests** (when available):
-   ```bash
-   pytest
-   ```
-
-3. **Format code**:
-   ```bash
-   black .
-   ```
-
-4. **Lint code**:
-   ```bash
-   flake8 .
-   ```
-
-5. **Deactivate environment** when done:
-   ```bash
-   deactivate
-   ```
-
-### Troubleshooting
-
-#### Virtual Environment Issues
-
-- **On macOS/Linux**: If you get permission errors, ensure the setup script is executable: `chmod +x setup_env.sh`
-- **On Windows**: Run the Command Prompt as Administrator if you encounter permission issues
-- If Python 3.12 isn't available, the script will fall back to `python3` (macOS/Linux) or `python` (Windows)
-- Make sure you're in the project root directory when running setup commands
-
-#### Dependency Issues
-
-- If installation fails, try upgrading pip: `pip install --upgrade pip`
-- For pygame installation issues on Linux, you may need system dependencies: `sudo apt-get install python3-dev python3-pygame`
-- **On Windows**: If you encounter pygame installation issues, make sure you have the latest Visual C++ Redistributable installed
-- If you encounter network timeouts during pip install, try:
-  - Run the setup script again (both scripts have retry logic)
-  - **macOS/Linux**: Manually install dependencies: `source venv/bin/activate && pip install -r requirements.txt`
-  - **Windows**: Manually install dependencies: `venv\Scripts\activate.bat && pip install -r requirements.txt`
-  - Use a different pip index: `pip install -i https://pypi.org/simple/ -r requirements.txt`
-
-### Contributing
-
-1. Ensure your virtual environment is set up and activated
-2. Install all dependencies including development tools
-3. Run tests and linting before submitting changes
-4. Follow the existing code style (use `black` for formatting)
-
-### Project Structure
+The project has been reorganized to follow Python best practices for game development:
 
 ```
 newgame/
-├── .python-version      # Specifies Python version
-├── requirements.txt     # Python dependencies
-├── setup_env.sh        # Environment setup script (macOS/Linux)
-├── setup_env.bat       # Environment setup script (Windows)
-├── design_doc.md       # Game design documentation
-├── examples/           # Example code and demos
-│   └── game_example.py # Simple pygame verification script
-├── .gitignore          # Git ignore patterns
-└── README.md           # This file
+├── src/newgame/           # Main game package
+│   ├── config/            # Game settings and constants
+│   │   ├── settings.py    # Configurable game parameters
+│   │   └── constants.py   # Static game constants
+│   ├── core/              # Core game systems
+│   │   ├── game.py        # Main game class and loop
+│   │   └── game_state.py  # Game state management
+│   ├── entities/          # Game objects
+│   │   ├── player.py      # Player (beaver) character
+│   │   ├── objects.py     # Lodge, dam, and other objects
+│   │   └── food.py        # Food system and items
+│   ├── systems/           # Game systems
+│   │   └── ui.py          # User interface and HUD
+│   └── utils/             # Utility functions
+│       └── math.py        # Math and collision utilities
+├── tests/                 # Test suite
+├── docs/                  # Documentation and screenshots
+├── scripts/               # Development scripts
+└── examples/              # Example code and demos
 ```
 
-### Testing Your Setup
+### Development Environment Setup
 
-After running the setup script, you can test that everything works correctly:
+#### Automated Setup (Recommended)
+
+**On macOS/Linux:**
+```bash
+./setup_env.sh
+```
+
+**On Windows:**
+```cmd
+setup_env.bat
+```
+
+#### Manual Setup
 
 ```bash
-# On macOS/Linux:
-# Activate the virtual environment
-source venv/bin/activate
+# Create virtual environment
+python -m venv venv
 
-# Run the example script to verify pygame works
-python examples/game_example.py
+# Activate environment
+source venv/bin/activate  # macOS/Linux
+# or
+venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-```cmd
-# On Windows:
-# Activate the virtual environment
-venv\Scripts\activate.bat
+### Running the Game
 
-# Run the example script to verify pygame works
-python examples/game_example.py
+Several ways to run the game:
+
+```bash
+# Development mode (recommended during development)
+python scripts/run_game.py
+
+# Direct module execution
+python -m newgame.main
+
+# Installed package (after pip install -e .)
+newgame
 ```
 
-This will verify that pygame is properly installed and ready for game development.
+### Testing
+
+```bash
+# Install development dependencies
+pip install -e .[dev]
+
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=newgame --cov-report=html
+```
+
+### Code Quality
+
+```bash
+# Format code
+black src/ tests/
+
+# Check style
+flake8 src/ tests/
+```
+
+## Requirements
+
+- **Python**: 3.8+ (3.12.3 recommended)
+- **Pygame**: 2.5.0+
+- **Development Tools**: pytest, black, flake8 (for contributors)
+
+## Key Improvements in New Structure
+
+1. **Proper Python Package**: Installable package under `src/newgame/`
+2. **Separation of Concerns**: Clear separation between config, core systems, entities, and utilities
+3. **Scalability**: Easy to add new systems (audio, graphics, networking) later
+4. **Testing**: Dedicated test structure with room to grow
+5. **Modern Configuration**: Uses `pyproject.toml` for modern Python project standards
+6. **Documentation**: Centralized docs with organized screenshots
 
 ## License
 
