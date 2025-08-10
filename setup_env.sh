@@ -39,9 +39,30 @@ source venv/bin/activate
 echo "⬆️  Upgrading pip..."
 pip install --upgrade pip
 
-# Install dependencies
+# Install dependencies with retry logic
 echo "📚 Installing dependencies from requirements.txt..."
-pip install -r requirements.txt
+MAX_RETRIES=3
+RETRY_COUNT=0
+
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    if pip install --timeout 300 --retries 2 -r requirements.txt; then
+        echo "✅ Dependencies installed successfully!"
+        break
+    else
+        RETRY_COUNT=$((RETRY_COUNT + 1))
+        if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+            echo "⚠️  Installation failed, retrying ($RETRY_COUNT/$MAX_RETRIES)..."
+            sleep 5
+        else
+            echo "❌ Failed to install dependencies after $MAX_RETRIES attempts."
+            echo "💡 This may be due to network connectivity issues."
+            echo "💡 You can manually install dependencies later with:"
+            echo "   source venv/bin/activate"
+            echo "   pip install -r requirements.txt"
+            echo ""
+        fi
+    fi
+done
 
 echo "✅ Setup complete!"
 echo ""

@@ -122,6 +122,10 @@ The project includes the following main dependencies (see `requirements.txt` for
 
 - If installation fails, try upgrading pip: `pip install --upgrade pip`
 - For pygame installation issues on Linux, you may need system dependencies: `sudo apt-get install python3-dev python3-pygame`
+- If you encounter network timeouts during pip install, try:
+  - Run the setup script again (it has retry logic)
+  - Manually install dependencies: `source venv/bin/activate && pip install -r requirements.txt`
+  - Use a different pip index: `pip install -i https://pypi.org/simple/ -r requirements.txt`
 
 ### Contributing
 
@@ -138,9 +142,25 @@ newgame/
 ├── requirements.txt     # Python dependencies
 ├── setup_env.sh        # Environment setup script
 ├── design_doc.md       # Game design documentation
+├── examples/           # Example code and demos
+│   └── game_example.py # Simple pygame verification script
 ├── .gitignore          # Git ignore patterns
 └── README.md           # This file
 ```
+
+### Testing Your Setup
+
+After running the setup script, you can test that everything works correctly:
+
+```bash
+# Activate the virtual environment
+source venv/bin/activate
+
+# Run the example script to verify pygame works
+python examples/game_example.py
+```
+
+This will verify that pygame is properly installed and ready for game development.
 
 ## License
 
