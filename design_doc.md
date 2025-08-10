@@ -16,7 +16,7 @@ This screen will contain:
 
 The screens to the east, south, and west of the dam will be the only other areas accessible to the player at the start of the game.
 
-This screen will contain the Lodge that is a "safe zone" and is the beaver's home.
+This screen will contain the Lodge that is the beaver's home.
 
 ## Input
 - The player can move with `WASD` keys or the `Up`, `Left`, `Down`, `Right` arrow keys.
@@ -36,6 +36,26 @@ When it reaches 20%, the bar turns red.
 If supply reaches zero, the game is over.
 When the player collects <food-item>, the supply is increased by 5.
 
+### Zones
+The player moves between three zones:
+- Lodge
+- Water
+- Land
+
+#### Lodge
+This should just be a static image of the beaver chilling in its cozy lodge. 
+It should show the beaver sitting in a comfortable upholstered chair, softly lit
+by a reading lamp, absorbed in a book. The chair should be green. A crackling fireplace
+should be visible in the background.
+
+#### Water
+The water is blue, and when in the water, the beaver's head should be visible
+above the surface.
+
+#### Land
+The Land zone is woodland. The beaver should move noticeably slowly on land as compared
+with water.
+
 ## Game Menus
 
 ### Start screen
@@ -45,8 +65,7 @@ To be implemented in a later version.
 - Displays two buttons in the center of the screen, one above the other: `Resume` and `Quit`
 - When the pause menu is activated, the game screen is dimmed 50%
 
-
-
 ## Sound
 
 ## Graphics
+In this early stage, please do not use sprites and generate all graphics using pygame's drawing tools.
