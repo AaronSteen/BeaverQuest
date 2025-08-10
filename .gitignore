@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Game screenshots (keep only documentation screenshots)
+game_screenshot.png
+
 # Distribution / packaging
 .Python
 build/
