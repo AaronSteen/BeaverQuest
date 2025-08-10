@@ -3,10 +3,12 @@ A game where you play as a beaver and collect resources from the surrounding woo
 
 Visually, it's a top-down, 2-D game in the vein of Zelda: Link to the Past.
 
-Represented as data, the game world will be a 9x9 2-D coordinate plane, zero-indexed, so that the northwest screen is at coordinate 0, 0.
+## Game world
+Represented as data, the game world will be a 9x9 2-D coordinate plane, zero-indexed, so that the northwest screen is at coordinate [0, 0].
 
-When the game begins, you start in the screen at the exact center of the plane, at coordinate 4, 4.
+When the game begins, you start in the exact center of the game world, at coordinate [4, 4], called `HOME_SCREEN`.
 
+### HOME_SCREEN
 This screen will contain:
 - A lodge that is the beaver's home, and
 - along the north border of the screen, the dam.
@@ -14,9 +16,7 @@ This screen will contain:
 
 The screens to the east, south, and west of the dam will be the only other areas accessible to the player at the start of the game.
 
-This screen will contain the Lodge that is a "safe zone" and is the beaver's home. This screen
-
-The game world will be stored as anWhen the game starts, the forest that serves as the game's setting should be represented by four separate screens.
+This screen will contain the Lodge that is a "safe zone" and is the beaver's home.
 
 ## Input
 - The player can move with `WASD` keys or the `Up`, `Left`, `Down`, `Right` arrow keys.
@@ -24,15 +24,6 @@ The game world will be stored as anWhen the game starts, the forest that serves 
 - The player can grab with `F`.
 - The `Esc` key pauses the game and opens the pause menu.
 - All other keys have no use.
-
-## Game Menus
-
-### Start screen
-To be implemented in a later version.
-
-### Pause menu
-- Displays two buttons in the center of the screen, one above the other: `Resume` and `Quit`
-- When the pause menu is activated, the game screen is dimmed 50%
 
 ## Gameplay mechanics
 This section describes the systems of the game world.
@@ -45,7 +36,16 @@ When it reaches 20%, the bar turns red.
 If supply reaches zero, the game is over.
 When the player collects <food-item>, the supply is increased by 5.
 
-###
+## Game Menus
+
+### Start screen
+To be implemented in a later version.
+
+### Pause menu
+- Displays two buttons in the center of the screen, one above the other: `Resume` and `Quit`
+- When the pause menu is activated, the game screen is dimmed 50%
+
+
 
 ## Sound
 
