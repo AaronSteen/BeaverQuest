@@ -26,7 +26,10 @@ Thank you for contributing to the Beaver Survival Game! This guide will help you
    # Validate build still works
    python scripts/validate_build.py
 
-   # Run existing tests
+   # Run smoke tests (quick initialization checks)
+   python -m pytest tests/test_smoke.py -v
+
+   # Run full test suite
    pytest
 
    # Format code
@@ -45,6 +48,26 @@ The `scripts/validate_build.py` script is your first line of defense against "wo
 - ✅ Pygame installation and initialization
 - ✅ Basic object instantiation
 - ✅ Virtual environment setup
+
+## Smoke Tests
+
+The `tests/test_smoke.py` provides quick game initialization validation:
+
+### What It Tests
+- ✅ Pygame initialization/cleanup (headless safe)
+- ✅ Game object creation and basic functionality
+- ✅ Core component instantiation (Player, UI, FoodManager, etc.)
+- ✅ Configuration imports and essential settings
+- ✅ Complete game startup sequence
+
+### Usage
+```bash
+# Run smoke tests only (fastest)
+python -m pytest tests/test_smoke.py -v
+
+# Run all tests
+pytest
+```
 
 ### When to Run
 - **Before starting development** - Ensures clean environment
