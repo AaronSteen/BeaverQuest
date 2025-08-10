@@ -117,6 +117,51 @@ newgame/
 3. **Testing**: Follow CONTRIBUTING.md validation steps (build validation + smoke tests + full tests)
 4. **Code Quality**: Run black and flake8 before submitting changes (see CONTRIBUTING.md)
 
+## Documentation Maintenance Guidelines
+
+**🔄 CRITICAL: Always keep documentation synchronized with code changes!**
+
+### When Making Changes, Update Documentation:
+
+#### Development Workflow Changes
+- **Modified build validation?** → Update `CONTRIBUTING.md` workflow steps
+- **New testing approach?** → Update `CONTRIBUTING.md` testing section
+- **Changed setup process?** → Update both `README.md` and `CONTRIBUTING.md`
+- **New validation tools?** → Update `CONTRIBUTING.md` and this copilot file
+
+#### Game Feature Changes
+- **New controls/inputs?** → Update `docs/GAME_README.md` controls section AND `docs/design_doc.md`
+- **Modified game mechanics?** → Update `docs/design_doc.md` specifications
+- **Changed UI elements?** → Update `docs/GAME_README.md` gameplay section
+- **New game objects/entities?** → Update `docs/design_doc.md` game world section
+
+#### Project Structure Changes
+- **New directories/modules?** → Update `README.md` project structure
+- **Changed dependencies?** → Update `requirements.txt` AND `README.md` requirements section
+- **Modified scripts?** → Update `README.md` usage instructions
+- **New configuration files?** → Update `README.md` and relevant workflow docs
+
+#### Testing/Validation Changes
+- **New test types?** → Update `CONTRIBUTING.md` testing workflow
+- **Modified validation scripts?** → Update `CONTRIBUTING.md` and `README.md`
+- **Changed test structure?** → Update `docs/TEST_PLAN.md` implementation status
+- **New build requirements?** → Update `CONTRIBUTING.md` and setup scripts
+
+### Documentation Cross-References to Maintain:
+- `README.md` ↔ `CONTRIBUTING.md` (setup & workflow consistency)
+- `docs/design_doc.md` ↔ `docs/GAME_README.md` (game mechanics alignment)
+- `CONTRIBUTING.md` ↔ `docs/TEST_PLAN.md` (testing approach consistency)
+- All docs ↔ Actual code implementation (accuracy)
+
+### Quick Documentation Check Before Committing:
+1. **Did I change game mechanics?** → Check `docs/design_doc.md` and `docs/GAME_README.md`
+2. **Did I modify dev workflow?** → Check `CONTRIBUTING.md`
+3. **Did I add new tools/scripts?** → Check `README.md` and `CONTRIBUTING.md`
+4. **Did I change project structure?** → Check `README.md` structure section
+5. **Did I update dependencies?** → Check `README.md` requirements
+
+**Remember**: Outdated documentation causes more "works on my machine" issues than code bugs!
+
 ### Important Notes
 - The project uses the py launcher on Windows for Python version management
 - Virtual environment is essential - never install packages globally
