@@ -76,14 +76,22 @@ newgame/
 ### Before Making Changes
 1. **ALWAYS** ensure the virtual environment is active
 2. **ALWAYS** run the appropriate setup script if working on a new machine
-3. **VALIDATE** your environment: `python scripts/validate_build.py`
-4. **VERIFY** pygame installation by running: `python examples/game_example.py`
+3. **FOLLOW** the complete validation workflow in `CONTRIBUTING.md`
 
-### Build Validation
-- **Quick Test**: `python scripts/validate_build.py` - Validates all imports and basic functionality
-- **Runtime**: ~5 seconds
-- **Purpose**: Catches "works on my machine" issues early in development
-- **When to Use**: Before development work, after environment changes, before commits
+### Validation Workflow
+**📖 See [CONTRIBUTING.md](../CONTRIBUTING.md) for the complete development workflow including:**
+- Build validation with `python scripts/validate_build.py`
+- Smoke tests with `python -m pytest tests/test_smoke.py -v`
+- Full test suite execution
+- Code formatting and quality checks
+- Pre-commit validation steps
+
+### Quick Validation Commands
+- **Build Check**: `python scripts/validate_build.py` (~5 seconds)
+- **Smoke Tests**: `python -m pytest tests/test_smoke.py -v` (~3 seconds)
+- **Full Tests**: `pytest` (comprehensive coverage)
+- **Format**: `black src/ tests/`
+- **Lint**: `flake8 src/ tests/`
 
 ### Code Quality Standards
 - **Formatting**: Use `black .` for consistent code formatting
@@ -98,15 +106,16 @@ newgame/
 - **Sphinx**: Documentation generation
 
 ### Key Files to Reference
+- `CONTRIBUTING.md`: **Complete development workflow and validation steps**
 - `design_doc.md`: Complete game design specifications and mechanics
-- `README.md`: Detailed setup instructions and troubleshooting
+- `README.md`: Project overview and setup instructions
 - `requirements.txt`: All Python dependencies with versions
 
 ### Common Tasks
-1. **New Feature Development**: Check design_doc.md for specifications
+1. **New Feature Development**: Check design_doc.md for specifications, follow CONTRIBUTING.md workflow
 2. **Environment Issues**: Run appropriate setup script, check README troubleshooting
-3. **Testing**: Ensure pygame imports work with the verification script
-4. **Code Quality**: Run black and flake8 before submitting changes
+3. **Testing**: Follow CONTRIBUTING.md validation steps (build validation + smoke tests + full tests)
+4. **Code Quality**: Run black and flake8 before submitting changes (see CONTRIBUTING.md)
 
 ### Important Notes
 - The project uses the py launcher on Windows for Python version management
