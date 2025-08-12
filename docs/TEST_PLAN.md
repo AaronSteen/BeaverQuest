@@ -7,6 +7,22 @@ This document outlines the implementation plan for hardening the Newgame project
 
 **🚀 QUICK WINS**: Look for tasks marked with `🚀 QUICK-WIN-#` for immediate implementation with minimal setup cost.
 
+**Status Legend**:
+- ✅ **COMPLETED** - Task is done and tested
+- 🟢 **READY** - All dependencies met, ready to start
+- 🟡 **BLOCKED** - Waiting for dependencies to be completed
+- ⚪ **NOT STARTED** - Not yet prioritized for implementation
+
+**📝 IMPORTANT: Keep This Document Updated!**
+When you complete a task:
+1. Change status from 🟢 **READY** → ✅ **COMPLETED**
+2. Update all task checkboxes from `[ ]` to `[x]`
+3. Add completion notes with implementation details
+4. Update dependent tasks to 🟢 **READY** if all their dependencies are now complete
+5. Consider updating runtime estimates if actual time differed significantly
+
+This keeps the document current and helps the next developer know what's available to work on!
+
 ---
 
 ## 🚀 IMMEDIATE ACTION: Quick Wins for Local Build Validation
