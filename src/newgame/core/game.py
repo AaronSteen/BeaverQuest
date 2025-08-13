@@ -40,6 +40,9 @@ class BeaverSurvivalGame:
         self.game_state = GameStateManager()
         self.ui = UI()
 
+        # Initialize game world
+        self._init_world()
+
         # Initialize game objects
         self._init_game_objects()
 
@@ -49,6 +52,10 @@ class BeaverSurvivalGame:
 
         # Input tracking
         self.keys_pressed = {}
+
+    def _init_game_world(self):
+        """Initialize game world."""
+        self.world = World()
 
     def _init_game_objects(self):
         """Initialize all game objects."""
@@ -146,7 +153,6 @@ class BeaverSurvivalGame:
         self.screen.fill(COLORS["GREEN"])
 
         # Draw water area (upper part of screen)
-        water_rect = pygame.Rect(0, 10, SCREEN_WIDTH, 100)
         pygame.draw.rect(self.screen, COLORS["BLUE"], water_rect)
 
         # Draw game objects

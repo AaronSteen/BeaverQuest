@@ -39,3 +39,7 @@ MOVEMENT_KEYS = {
     pygame.K_LEFT: (-1, 0),
     pygame.K_RIGHT: (1, 0),
 }
+
+# World size
+WORLD_SIZE_X = 9
+WORLD_SIZE_Y = 9
