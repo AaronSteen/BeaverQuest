@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Attach to Newgame Debugger",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "."
+                }
+            ],
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Launch Newgame with Debugger",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/newgame/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "DEBUGPY_ENABLE": "1"
+            },
+            "python": "${workspaceFolder}/venv/bin/python"
+        }
+    ]
+}

@@ -54,11 +54,11 @@ def test_game_creation():
         assert game is not None, "Game object creation failed"
 
         # Verify essential attributes exist
-        assert hasattr(game, 'screen'), "Game missing screen attribute"
-        assert hasattr(game, 'clock'), "Game missing clock attribute"
-        assert hasattr(game, 'game_state'), "Game missing game_state attribute"
-        assert hasattr(game, 'player'), "Game missing player attribute"
-        assert hasattr(game, 'food_manager'), "Game missing food_manager attribute"
+        assert hasattr(game, "screen"), "Game missing screen attribute"
+        assert hasattr(game, "clock"), "Game missing clock attribute"
+        assert hasattr(game, "game_state"), "Game missing game_state attribute"
+        assert hasattr(game, "player"), "Game missing player attribute"
+        assert hasattr(game, "food_manager"), "Game missing food_manager attribute"
 
     finally:
         pygame.quit()
@@ -87,8 +87,8 @@ def test_player_creation():
         assert player is not None, "Player creation failed"
 
         # Verify player has required attributes
-        assert hasattr(player, 'rect'), "Player missing rect attribute"
-        assert hasattr(player, 'current_zone'), "Player missing current_zone attribute"
+        assert hasattr(player, "rect"), "Player missing rect attribute"
+        assert hasattr(player, "current_zone"), "Player missing current_zone attribute"
         assert player.rect.x == 100, "Player x position not set correctly"
         assert player.rect.y == 100, "Player y position not set correctly"
 
@@ -106,12 +106,12 @@ def test_game_objects_creation():
         # Create lodge
         lodge = Lodge(50, 50)
         assert lodge is not None, "Lodge creation failed"
-        assert hasattr(lodge, 'get_collision_rect'), "Lodge missing collision method"
+        assert hasattr(lodge, "get_collision_rect"), "Lodge missing collision method"
 
         # Create dam
         dam = Dam()
         assert dam is not None, "Dam creation failed"
-        assert hasattr(dam, 'get_collision_rect'), "Dam missing collision method"
+        assert hasattr(dam, "get_collision_rect"), "Dam missing collision method"
 
     finally:
         pygame.quit()
@@ -128,9 +128,11 @@ def test_ui_creation():
         assert ui is not None, "UI creation failed"
 
         # Verify UI has required methods
-        assert hasattr(ui, 'draw_hud'), "UI missing draw_hud method"
-        assert hasattr(ui, 'draw_pause_menu'), "UI missing draw_pause_menu method"
-        assert hasattr(ui, 'draw_game_over_screen'), "UI missing draw_game_over_screen method"
+        assert hasattr(ui, "draw_hud"), "UI missing draw_hud method"
+        assert hasattr(ui, "draw_pause_menu"), "UI missing draw_pause_menu method"
+        assert hasattr(
+            ui, "draw_game_over_screen"
+        ), "UI missing draw_game_over_screen method"
 
     finally:
         pygame.quit()
@@ -153,8 +155,10 @@ def test_food_manager_creation():
         assert food_manager is not None, "FoodManager creation failed"
 
         # Verify food manager has required methods
-        assert hasattr(food_manager, 'update'), "FoodManager missing update method"
-        assert hasattr(food_manager, 'check_collection'), "FoodManager missing check_collection method"
+        assert hasattr(food_manager, "update"), "FoodManager missing update method"
+        assert hasattr(
+            food_manager, "check_collection"
+        ), "FoodManager missing check_collection method"
 
     finally:
         pygame.quit()
@@ -165,13 +169,13 @@ def test_config_imports():
     from newgame.config import settings, constants
 
     # Verify essential settings exist
-    assert hasattr(settings, 'SCREEN_WIDTH'), "Missing SCREEN_WIDTH setting"
-    assert hasattr(settings, 'SCREEN_HEIGHT'), "Missing SCREEN_HEIGHT setting"
-    assert hasattr(settings, 'FPS'), "Missing FPS setting"
+    assert hasattr(settings, "SCREEN_WIDTH"), "Missing SCREEN_WIDTH setting"
+    assert hasattr(settings, "SCREEN_HEIGHT"), "Missing SCREEN_HEIGHT setting"
+    assert hasattr(settings, "FPS"), "Missing FPS setting"
 
     # Verify essential constants exist
-    assert hasattr(constants, 'COLORS'), "Missing COLORS constant"
-    assert hasattr(constants, 'STATE_PLAYING'), "Missing STATE_PLAYING constant"
+    assert hasattr(constants, "COLORS"), "Missing COLORS constant"
+    assert hasattr(constants, "STATE_PLAYING"), "Missing STATE_PLAYING constant"
 
 
 def test_full_game_initialization_flow():

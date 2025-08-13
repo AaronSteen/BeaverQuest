@@ -149,6 +149,50 @@ black src/ tests/
 flake8 src/ tests/
 ```
 
+### Debugging
+
+The game supports Python debugging using debugpy for VS Code and other IDEs:
+
+#### Enable Debugging Mode
+
+```bash
+# Set environment variable to enable debugpy
+export DEBUGPY_ENABLE=1  # Linux/macOS
+# or
+set DEBUGPY_ENABLE=1     # Windows
+
+# Run the game - it will wait for debugger attach
+python -m newgame.main
+```
+
+When debugging is enabled, the game will:
+1. Start debugpy server on port 5678
+2. Print "Waiting for debugger attach..."
+3. Wait for a debugger to connect before continuing
+
+#### VS Code Debugging
+
+Two pre-configured launch configurations are available in `.vscode/launch.json`:
+
+1. **"Python: Attach to Newgame Debugger"** - Attach to a running game instance
+2. **"Python: Launch Newgame with Debugger"** - Launch game with debugging enabled
+
+To use:
+1. Start the game with `DEBUGPY_ENABLE=1`
+2. In VS Code, go to Run and Debug (Ctrl+Shift+D)
+3. Select "Python: Attach to Newgame Debugger"
+4. Click the play button to attach
+
+#### Remote Debugging
+
+The debugpy server listens on `0.0.0.0:5678`, allowing remote debugging:
+
+```bash
+# From your IDE or debugger client
+import debugpy
+debugpy.connect(("remote-host", 5678))
+```
+
 ## Requirements
 
 - **Python**: 3.8+ (3.12.3 recommended)
