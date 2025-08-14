@@ -42,9 +42,6 @@ docs = [
 
 [project.scripts]
 newgame = "newgame.main:main"
-run = "newgame.main:run_game"
-debug = "newgame.main:debug_game"
-attach = "newgame.main:attach_game"
 
 [project.urls]
 Homepage = "https://github.com/friendlyman23/newgame"
