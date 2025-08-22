@@ -1,4 +1,4 @@
-# Newgame - Beaver Survival Game
+# BeaverQuest - Beaver Survival Game
 
 A 2D top-down survival game where you play as a beaver collecting food to survive in your woodland home. Built with Pygame and inspired by classic adventure games like Zelda: Link to the Past.
 
