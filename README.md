@@ -11,10 +11,61 @@ A 2D top-down survival game where you play as a beaver collecting food to surviv
 git clone https://github.com/friendlyman23/newgame.git
 cd newgame
 
-# Install dependencies
-pip install -r requirements.txt
+# Setup environment (creates venv and installs dependencies)
+./setup_env.sh        # On macOS/Linux
+setup_env.bat          # On Windows
 
-# Run the game (development mode)
+# Install package in development mode
+pip install -e .
+
+# Run the game
+./run.py               # Normal gameplay
+./debug.py             # VS Code debugger integration
+./attach.py            # Runtime debugger attachment
+```
+
+## Three-Way Launch System
+
+The project provides three streamlined ways to run the game, each handling virtual environment activation automatically:
+
+### 🎮 Normal Mode - `run.py` / `run.bat`
+```bash
+./run.py               # macOS/Linux
+run.bat                 # Windows
+```
+- Fastest startup for regular gameplay and testing
+- No debugger overhead
+- Perfect for playtesting and deployment scenarios
+
+### 🔍 Debug Mode - `debug.py` / `debug.bat`  
+```bash
+./debug.py             # macOS/Linux
+debug.bat               # Windows
+```
+- Launches game with debugpy integration
+- Waits for VS Code debugger attachment before starting
+- Ideal for breakpoint debugging from application startup
+- Uses existing VS Code launch configurations
+
+### 🔗 Attach Mode - `attach.py` / `attach.bat`
+```bash
+./attach.py            # macOS/Linux
+attach.bat              # Windows
+```
+- Runs game normally but enables debugger attachment
+- Use VS Code "Attach to Newgame Debugger" to connect when needed
+- Best for debugging mid-game state or specific scenarios
+
+**Key Features:**
+- ✅ **Automatic venv detection and activation** - No more forgotten virtual environments
+- ✅ **Cross-platform support** - Works on Windows, macOS, and Linux
+- ✅ **Clear feedback messages** - Know exactly what's happening during launch
+- ✅ **Robust error handling** - Informative troubleshooting guidance
+
+### Legacy Installation Method
+```bash
+# Alternative installation (if you prefer pip directly)
+pip install -r requirements.txt
 python scripts/run_game.py
 
 # Or install as package and run
@@ -147,6 +198,50 @@ black src/ tests/
 
 # Check style
 flake8 src/ tests/
+```
+
+### Debugging
+
+The game supports Python debugging using debugpy for VS Code and other IDEs:
+
+#### Enable Debugging Mode
+
+```bash
+# Set environment variable to enable debugpy
+export DEBUGPY_ENABLE=1  # Linux/macOS
+# or
+set DEBUGPY_ENABLE=1     # Windows
+
+# Run the game - it will wait for debugger attach
+python -m newgame.main
+```
+
+When debugging is enabled, the game will:
+1. Start debugpy server on port 5678
+2. Print "Waiting for debugger attach..."
+3. Wait for a debugger to connect before continuing
+
+#### VS Code Debugging
+
+Two pre-configured launch configurations are available in `.vscode/launch.json`:
+
+1. **"Python: Attach to Newgame Debugger"** - Attach to a running game instance
+2. **"Python: Launch Newgame with Debugger"** - Launch game with debugging enabled
+
+To use:
+1. Start the game with `DEBUGPY_ENABLE=1`
+2. In VS Code, go to Run and Debug (Ctrl+Shift+D)
+3. Select "Python: Attach to Newgame Debugger"
+4. Click the play button to attach
+
+#### Remote Debugging
+
+The debugpy server listens on `0.0.0.0:5678`, allowing remote debugging:
+
+```bash
+# From your IDE or debugger client
+import debugpy
+debugpy.connect(("remote-host", 5678))
 ```
 
 ## Requirements
