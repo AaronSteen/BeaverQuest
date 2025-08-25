@@ -20,15 +20,15 @@
         },
         {
             "name": "Python: Launch Newgame with Debugger",
-            "type": "debugpy",
+            "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/newgame/main.py",
+            "module": "newgame.main",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/src",
             "env": {
                 "DEBUGPY_ENABLE": "1"
             },
-            "python": "${workspaceFolder}/venv/bin/python"
+            "python": "${workspaceFolder}/venv/Scripts/python.exe"
         }
     ]
 }
