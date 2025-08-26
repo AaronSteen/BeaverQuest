@@ -4,28 +4,39 @@ Player (beaver) character for the Beaver Survival Game.
 
 import pygame
 from ..config.settings import (
-    PLAYER_SIZE,
-    PLAYER_SPEED,
-    PLAYER_SPEED_LAND,
-    SCREEN_WIDTH,
-    SCREEN_HEIGHT,
-)
+        PLAYER_SIZE,
+        PLAYER_SPEED,
+        PLAYER_SPEED_LAND,
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        )
 from ..config.constants import (
-    COLORS,
-    MOVEMENT_KEYS,
-    ZONE_LODGE,
-    ZONE_WATER,
-    ZONE_LAND,
-)
+        COLORS,
+        MOVEMENT_KEYS,
+        ZONE_LODGE,
+        ZONE_WATER,
+        ZONE_LAND,
+        WORLD_SIZE_X,
+        WORLD_SIZE_Y,
+        HOME_SCREEN_X,
+        HOME_SCREEN_Y
+        )
 
-
+# This class was extensively updated to track the player's position in the broader world;
+#   explanatory comments may be found throughout.
+#                               -AS, 8.26.25
 class Player:
     """The beaver player character."""
 
-    def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, PLAYER_SIZE, PLAYER_SIZE)
+# The world now comprises a 9x9, 0-indexed grid. Player class was updated with 
+#   to track world_x and world_y variables that track the player's position
+#   in the grid
+    def __init__(self):
+        self.rect = pygame.Rect(400, 300, PLAYER_SIZE, PLAYER_SIZE)
         self.current_zone = ZONE_LAND
         self.color = COLORS["BROWN"]
+        self.world_x = HOME_SCREEN_X
+        self.world_y = HOME_SCREEN_Y
 
     def update(self, keys_pressed, lodge_rect, dam_rect):
         """Update player position based on input and collisions."""
@@ -49,28 +60,69 @@ class Player:
         dx *= speed
         dy *= speed
 
-        # Store old position for collision detection
-        old_x, old_y = self.rect.x, self.rect.y
+        # Collision stuff.
+        #       Decide whether to update the player's position in the world grid
+        #           by checking whether they leave the screen.
+        #
+        #       Ensure the player's world position is within the bounds of the world;
+        #               if not, reset it.
+        #
+        #       First do horizontal dimension, then vertical dimension.
 
-        # Move horizontally
+        # Store old positions; we use these to reset if we exceed screen or world bounds
+        old_screen_x, old_screen_y = self.rect.x, self.rect.y
+        old_world_x, old_world_y = self.world_x, self.world_y
+
+        # Horizontal dimension
         self.rect.x += dx
-        # Check horizontal collisions
-        if (
-            self.rect.left < 0
-            or self.rect.right > SCREEN_WIDTH
-            or self._check_dam_collision(dam_rect)
-        ):
-            self.rect.x = old_x
 
-        # Move vertically
+        if self.rect.left < 0:
+            self.world_x -= 1
+            if self.world_x < 0:
+                self.rect.x = old_screen_x
+                self.world_x = old_world_x
+            else:
+                self.rect.x = (SCREEN_WIDTH - PLAYER_SIZE)
+
+        if self.rect.right > SCREEN_WIDTH:
+            self.world_x += 1
+            if self.world_x >= WORLD_SIZE_X:
+                self.rect.x = old_screen_x
+                self.world_x = old_world_x
+            else:
+                self.rect.x = 0
+
+        if self._check_dam_collision(dam_rect):
+            self.rect.x = old_screen_x
+
+        # Vertical dimension
         self.rect.y += dy
-        # Check vertical collisions
-        if (
-            self.rect.top < 0
-            or self.rect.bottom > SCREEN_HEIGHT
-            or self._check_dam_collision(dam_rect)
-        ):
-            self.rect.y = old_y
+
+        if self.rect.top < 0:
+            self.world_y -= 1
+            if self.world_y < 0:
+                self.rect.y = old_screen_y
+                self.world_y = old_world_y
+            else:
+                self.rect.y = (SCREEN_HEIGHT - PLAYER_SIZE)
+
+        # Here we check to see if the player is trying to enter the home screen from the top;
+        #   if so, we block them because the dam is there. Not sure if this makes much
+        #   sense; couldn't the beaver just climb over the dam? And shouldn't there be some
+        #   water on the other side of the dam? 
+        if self.rect.bottom > SCREEN_HEIGHT:
+            self.world_y += 1
+            if ( (self.world_y >= WORLD_SIZE_Y) or ( (self.world_x == HOME_SCREEN_X) and (self.world_y == HOME_SCREEN_Y) ) ):
+                self.rect.y = old_screen_y
+                self.world_y = old_world_y
+            else:
+                self.rect.y = 0
+
+        # Only check for dam collision if we're on the home screen
+        if (self.world_x == HOME_SCREEN_X and
+                self.world_y == HOME_SCREEN_Y):
+            if self._check_dam_collision(dam_rect):
+                self.rect.y = old_screen_y
 
         # Update current zone
         self._update_zone(lodge_rect)
@@ -101,8 +153,8 @@ class Player:
         # If in water, show head above water (lighter brown circle)
         if self.current_zone == ZONE_WATER:
             head_rect = pygame.Rect(
-                self.rect.centerx - 6, self.rect.centery - 6, 12, 12
-            )
+                    self.rect.centerx - 6, self.rect.centery - 6, 12, 12
+                    )
             pygame.draw.ellipse(screen, COLORS["BROWN"], head_rect)
 
     def get_collision_rect(self):
