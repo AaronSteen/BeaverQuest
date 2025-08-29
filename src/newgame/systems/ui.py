@@ -6,6 +6,15 @@ import pygame
 from ..config.constants import COLORS
 from ..config.settings import SCREEN_WIDTH, SCREEN_HEIGHT, MAX_FOOD
 
+# Added a simple API for printing debug info.
+#   Currently, we use it to print the player's screen and world coordinates.
+#   See the documentation in the draw_hud method for instructions.
+#
+#   Also, for posterity, I slightly decreased the small_font value
+#       declared in UI.__init__. Shouldn't be a problem because 
+#       I didn't find any other instances of it being used in the
+#       codebase.
+#                   -AS, 8.26.25
 
 class UI:
     """Manages all UI elements including HUD and menus."""
@@ -13,10 +22,19 @@ class UI:
     def __init__(self):
         pygame.font.init()
         self.font = pygame.font.Font(None, 36)
-        self.small_font = pygame.font.Font(None, 24)
+        self.small_font = pygame.font.Font(None, 22)
         self.large_font = pygame.font.Font(None, 48)
 
-    def draw_hud(self, screen, food_amount):
+    def print_debug_info(self, screen, info_to_print, y_coord, x_coord=None):
+        rendered_info = self.small_font.render(info_to_print, True, COLORS["WHITE"])
+
+        if x_coord is None:
+            x_coord = (SCREEN_WIDTH * 0.85)
+
+        where_to_render_info = rendered_info.get_rect(topleft = (x_coord,y_coord))
+        screen.blit(rendered_info, where_to_render_info)
+
+    def draw_hud(self, screen, food_amount, player):
         """Draw the heads-up display."""
         # Food supply display in upper-left
         food_text = f"Food: {food_amount}/{MAX_FOOD}"
@@ -26,12 +44,38 @@ class UI:
         screen.blit(food_surface, (10, 10))
 
         # Optional: Add background for better readability
-        text_rect = food_surface.get_rect()
-        text_rect.x = 10
-        text_rect.y = 10
-        text_rect.inflate_ip(10, 5)
-        pygame.draw.rect(screen, (0, 0, 0, 128), text_rect)
+        food_text_rect = food_surface.get_rect()
+        food_text_rect.x = 10
+        food_text_rect.y = 10
+        food_text_rect.inflate_ip(10, 5)
+        pygame.draw.rect(screen, (0, 0, 0, 128), food_text_rect)
         screen.blit(food_surface, (10, 10))
+
+        # The print_debug_info method takes a string, so declare an f-string
+        #       as below and pass it in, along with an int that represents
+        #       the y-position of the debug text you want rendered.
+        #       
+        #       Note that the x position of the text is defined by an "x_coord"
+        #           parameter that is set by default within the function to be
+        #           85% of the screen's width. You can overrride this by calling
+        #           it this way:
+        #
+        #               self.print_debug_info(screen, cool_debug_info, 10, <x_coord>)
+        #               
+        #          Where <x_coord> is an optional int value that will override
+        #               the 85% value described above.
+
+        debug_screen_x = f"Screen X: {player.rect.x}"
+        self.print_debug_info(screen, debug_screen_x, 10)
+
+        debug_screen_y = f"Screen Y: {player.rect.y}"
+        self.print_debug_info(screen, debug_screen_y, 40)
+
+        debug_world_x = f"World X: {player.world_x}"
+        self.print_debug_info(screen, debug_world_x, 70)
+
+        debug_world_y = f"World Y: {player.world_y}"
+        self.print_debug_info(screen, debug_world_y, 100)
 
     def draw_game_over_screen(self, screen, survival_time):
         """Draw the game over screen."""

@@ -19,11 +19,14 @@ from ..config.constants import (
     STATE_PLAYING,
     STATE_PAUSED,
     STATE_GAME_OVER,
+    HOME_SCREEN_X,
+    HOME_SCREEN_Y
 )
 from .game_state import GameStateManager
 from ..entities.player import Player
 from ..entities.objects import Lodge, Dam
 from ..entities.food import FoodManager
+from ..world.world import World
 from ..systems.ui import UI
 
 
@@ -39,6 +42,9 @@ class BeaverSurvivalGame:
         # Game components
         self.game_state = GameStateManager()
         self.ui = UI()
+
+        # Initialize game world
+        self.world = World()
 
         # Initialize game objects
         self._init_game_objects()
@@ -61,9 +67,7 @@ class BeaverSurvivalGame:
         self.dam = Dam()
 
         # Create player starting position (center of screen)
-        player_x = SCREEN_WIDTH // 2 - 10
-        player_y = SCREEN_HEIGHT // 2
-        self.player = Player(player_x, player_y)
+        self.player = Player()
 
         # Create food manager
         self.food_manager = FoodManager(
@@ -140,24 +144,39 @@ class BeaverSurvivalGame:
             if self.food_amount <= 0:
                 self.game_state.set_state(STATE_GAME_OVER)
 
+    # For now we branch on whether the player is on the home screen:
+    #   - If so, we run the old set of draw calls when we had a one-screen game,
+    #           and draw the dam, lodge, etc.
+    #
+    #   - If not, we just draw a green background since that's forest for the 
+    #           beaver to conquer.
+    #
+    #                       -AS, 8.26.25
     def draw(self):
         """Draw everything on the screen."""
         # Clear screen with green background (land)
         self.screen.fill(COLORS["GREEN"])
 
-        # Draw water area (upper part of screen)
-        water_rect = pygame.Rect(0, 10, SCREEN_WIDTH, 100)
-        pygame.draw.rect(self.screen, COLORS["BLUE"], water_rect)
+        if (self.player.world_x == HOME_SCREEN_X and
+                self.player.world_y == HOME_SCREEN_Y):
 
-        # Draw game objects
-        self.dam.draw(self.screen)
-        self.lodge.draw(self.screen)
-        self.food_manager.draw(self.screen)
-        self.player.draw(self.screen)
+            # Draw water area (upper part of screen)
+            water_rect = pygame.Rect(0, 10, SCREEN_WIDTH, 100)
+            pygame.draw.rect(self.screen, COLORS["BLUE"], water_rect)
+
+            # Draw game objects
+            self.dam.draw(self.screen)
+            self.lodge.draw(self.screen)
+            self.food_manager.draw(self.screen)
+            self.player.draw(self.screen)
+
+        else:
+            self.food_manager.draw(self.screen)
+            self.player.draw(self.screen)
 
         # Draw UI based on game state
         if self.game_state.is_playing() or self.game_state.is_paused():
-            self.ui.draw_hud(self.screen, self.food_amount)
+            self.ui.draw_hud(self.screen, self.food_amount, self.player)
 
         if self.game_state.is_paused():
             self.ui.draw_pause_menu(self.screen)

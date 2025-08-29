@@ -10,7 +10,8 @@ SCREEN_HEIGHT = 600
 FPS = 60
 
 # Game world constants
-HOME_SCREEN_COORD = [4, 4]  # Starting position in 9x9 world grid
+HOME_SCREEN_X = 4
+HOME_SCREEN_Y = 4
 
 # Player constants
 PLAYER_SIZE = 20
